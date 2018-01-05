@@ -81,13 +81,6 @@ uint32_t s2n_client_hello_get_extensions(struct s2n_client_hello *ch, uint8_t *o
     return len;
 }
 
-int s2n_client_hello_zero(struct s2n_client_hello *client_hello)
-{
-    client_hello->compression_methods = 0;
-
-    return 0;
-}
-
 int s2n_client_hello_free(struct s2n_client_hello *client_hello) {
     notnull_check(client_hello);
 
