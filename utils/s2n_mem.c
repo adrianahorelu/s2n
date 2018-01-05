@@ -117,8 +117,11 @@ int s2n_free(struct s2n_blob *b)
         munlock_rc = munlock(b->data, b->size);
     }
 
-    free(b->data);
-    b->data = NULL;
+    if(b->allocated && b->data != NULL) {
+        free(b->data);
+        b->data = NULL;
+    }
+
     b->size = 0;
     b->allocated = 0;
 
@@ -136,7 +139,7 @@ int s2n_dup(struct s2n_blob *from, struct s2n_blob *to)
     eq_check(to->data, NULL);
 
     GUARD(s2n_alloc(to, from->size));
-    
+
     memcpy_check(to->data, from->data, to->size);
 
     return 0;
