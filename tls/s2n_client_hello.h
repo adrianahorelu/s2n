@@ -31,6 +31,8 @@ struct s2n_client_hello {
     struct s2n_blob extensions;
 
     uint8_t compression_methods;
+
+    unsigned int parsed:1;
 };
 
 int s2n_client_hello_free(struct s2n_client_hello *client_hello);

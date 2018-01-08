@@ -117,7 +117,7 @@ int s2n_free(struct s2n_blob *b)
         munlock_rc = munlock(b->data, b->size);
     }
 
-    if(b->allocated && b->data != NULL) {
+    if(b->allocated && b->data) {
         free(b->data);
         b->data = NULL;
     }
