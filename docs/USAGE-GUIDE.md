@@ -915,7 +915,8 @@ struct s2n_client_hello *s2n_connection_get_client_hello(struct s2n_connection *
 ```
 For a given s2n_connection, **s2n_connection_get_client_hello** returns a handle
 to the s2n_client_hello structure holding the client hello message sent by the client during the handshake.
-NULL is returned if the connection has not yet received and processed the client hello.
+NULL is returned if the connection has not yet received and parsed the client hello.
+Earliest point during the handshake when this structure is available for use is in the client_hello_callback (see **s2n_config_set_client_hello_cb**).
 
 ### s2n\_client\_hello\_get\_raw\_bytes
 
@@ -925,18 +926,14 @@ extern uint32_t s2n_client_hello_get_cipher_suites(struct s2n_client_hello *ch, 
 extern uint32_t s2n_client_hello_get_extensions(struct s2n_client_hello *ch, uint8_t *out, uint32_t max_length);
 ```
 
-- **ch** The s2n_client_hello on the connection. Can be obtained using **s2n_connection_get_client_hello**.
+- **ch** The s2n_client_hello on the s2n_connection. The handle can be obtained using **s2n_connection_get_client_hello**.
 - **out** Pointer to a buffer into which the requested data should be copied.
 - **max_length** Max number of bytes to copy into the **out** buffer.
 - **return value** The actual number of bytes that were copied into the **out** buffer.
 
-**s2n_client_hello_get_raw_bytes** can be used to instrument the client hello message that was used in the handshake.
+**s2n_client_hello_get_raw_bytes** can be used to instrument the full client hello message received by the server.
 **s2n_client_hello_get_cipher_suites** and **s2n_client_hello_get_extensions** can be used to obtain the cipher suites
 and the extensions on the client hello message, respectively, without the need for parsing the full client hello message.
-
-All **s2n_client_hello_get_\*** functions can be used after the client hello has been parsed by the server, using the handle
-returned by **s2n_connection_get_client_hello**. Earliest point during the handshake when these functions can be used
-is in the client_hello_callback (see **s2n_config_set_client_hello_cb**).
 
 ### s2n\_connection\_is\_client\_authenticated
 
